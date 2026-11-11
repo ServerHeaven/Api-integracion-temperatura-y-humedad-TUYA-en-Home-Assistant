@@ -1,0 +1,5 @@
+# Secretos / Secrets: nunca subir / never commit
+tuya_api.json
+.tuya_token.json
+secrets.yaml
+__pycache__/

@@ -1,0 +1,40 @@
+# Ejemplo / Example: sensor Tuya T&H via Cloud API (metodo B / method B)
+# Copiar a tu configuration.yaml (o a un package) / Copy into your configuration.yaml (or a package)
+# Requiere / Requires: /config/scripts/tuya_th.py y/and /config/tuya_api.json
+
+command_line:
+  - sensor:
+      name: "Tuya TH Salon"            # -> sensor.tuya_th_salon (temperatura / temperature)
+      unique_id: tuya_th_salon_cloud
+      command: "python3 /config/scripts/tuya_th.py"
+      scan_interval: 900               # 15 min: no saturar la API cloud / do not hammer the cloud API
+      command_timeout: 20
+      unit_of_measurement: "°C"
+      device_class: temperature
+      state_class: measurement
+      value_template: "{{ value_json.temperature }}"
+      json_attributes:
+        - humidity
+        - battery
+
+template:
+  - sensor:
+      - name: "Tuya TH Salon Humedad"
+        unique_id: tuya_th_salon_humedad
+        unit_of_measurement: "%"
+        device_class: humidity
+        state_class: measurement
+        state: "{{ state_attr('sensor.tuya_th_salon', 'humidity') }}"
+        availability: "{{ state_attr('sensor.tuya_th_salon', 'humidity') is not none }}"
+
+      # Bateria: si tu sensor devuelve un porcentaje (battery_percentage) usa esto.
+      # Battery: if your sensor returns a percentage (battery_percentage) use this.
+      # Si devuelve texto (battery_state: low/middle/high) quita unit/device_class.
+      # If it returns text (battery_state: low/middle/high) drop unit/device_class.
+      - name: "Tuya TH Salon Bateria"
+        unique_id: tuya_th_salon_bateria
+        unit_of_measurement: "%"
+        device_class: battery
+        state_class: measurement
+        state: "{{ state_attr('sensor.tuya_th_salon', 'battery') }}"
+        availability: "{{ state_attr('sensor.tuya_th_salon', 'battery') is number }}"

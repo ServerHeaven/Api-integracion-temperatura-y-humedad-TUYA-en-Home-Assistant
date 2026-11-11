@@ -1,0 +1,8 @@
+{
+  "client_id": "TU_ACCESS_ID",
+  "client_secret": "TU_ACCESS_SECRET",
+  "device_id": "TU_DEVICE_ID",
+  "region": "eu",
+  "temperature_divisor": 10,
+  "humidity_divisor": 1
+}
